@@ -1,7 +1,10 @@
+// Note: To run server "python -m http.server --cgi 8000"
+
+// Read and arrange the data
 d3.json('data/data.json').then(function(data){ // Here getting the data using an ajax call
   // console.log(data); // tested whether or not I was getting the data
 
-// Basic parameters of the svg
+// Basic parameters of the svg (part 1), declaring variables
   var barData, 
       margin,
       width = 900,
@@ -12,6 +15,7 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
 
 
 // _______________________________________________________________________________
+// Read and arrange the data
 // Wanted to get the data in a more concise, readable format for graphical display
   barData = [];
   for (var i = 0; i<data.length; i++) {
@@ -19,7 +23,7 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
   }
 // _______________________________________________________________________________
 
-// Basic parameters of the svg
+// Basic parameters of the svg (part 2)
   margin = {
     top: 15,
     bottom: 15,
@@ -39,11 +43,6 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
               .append('div')
               .attr('class', 'tooltip')
               .attr('opacity', '0');
-
-// Read and arrange the data
-
-
-
 
 // Set scales
 
@@ -80,7 +79,8 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
 
 // Legend function
 
-console.log(barData);
+
+console.log(barData); // within scope 
 });
 // json import, data is coming from the "data" attribute in the function callback
 // use json editer online to understand what the data is supposed to look like
