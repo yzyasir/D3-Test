@@ -1,3 +1,7 @@
+d3.json('data/data.json').then(function(data){
+  console.log(data);
+})// json import
+
 // Basic parameters of the svg
 var margin = {
   top: 15,
