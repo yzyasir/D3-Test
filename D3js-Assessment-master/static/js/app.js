@@ -73,7 +73,7 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
   var barWidth;
   barWidth = (svgWidth / barData.length);
   
-  barChart = svg.selectAll("rect") // bars are nothing more than rectangless, so we select all rectangles
+  barChart = svg.selectAll("rect") // bars are nothing more than rectangless, so we select all rectangles, since intially we have no rect, its empty
     .data(barData) // passed in our bar data, this method takes our data into a waiting state
     .enter() // this method will take our data away form the waiting state and perform further methods/operations for each individual data item
     .append("rect") // for each data item we are appending a rect in our svg(svg area) 
@@ -105,15 +105,25 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
 
 
 // Legend function
-
+  var valueHover
+  valueHover = svg.selectAll('text') // selects all text elements in the svg, and since we have no text elements upon writing this it will take none
+    .data(barData) // take in the data
+    .enter() // this will bring in data one by one for further processing
+    .append('text') // want to add a txt for each data item
+    .text(function(d) {
+      return d; // we want the value of the text to be the value of our data item
+    })
+    .attr('y', function(d, i) {
+      return svgHeight - d - 3; // want our text to be higher than out bar, thats why we are subtracting 3 more pixels
+    })
+    .attr('x', function(d, i) {
+      return barWidth * i; // we want the text element to be at the start of each bar
+    })
 
 console.log(barData); // within scope 
 });
 // json import, data is coming from the "data" attribute in the function callback
 // use json editer online to understand what the data is supposed to look like
 // Included everything within the ajax call so that it is within the scope of the data
-
-
-
 
 // _________________________________________________________
