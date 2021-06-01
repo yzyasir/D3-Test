@@ -13,7 +13,7 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
       svgWidth,
       svg, // svg(scalable vector graphics)
       X,
-      Y,
+      yScale,
       barChart
 
 
@@ -34,13 +34,17 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
     right: 15 // ...the starts and ends of the ranges are moved inward by the corresponding margins.
   };
 
-  svgHeight = height + margin.top + margin.bottom; // the y range
-  svgWidth = width + margin.left + margin.right;  // the x range
+  svgHeight = height + margin.top + margin.bottom; // the y 
+  svgWidth = width + margin.left + margin.right;  // the x 
 
   svg = d3.select('#svg-area') // here svg-area is being passed to svg
-          .append('svg')
+          .append('svg') // .append() appends a new element with the specified name as the last childe in the current selection
           .attr('width', svgWidth) // need to give the svg the attributes of height and width of whats defined above
-          .attr('height', svgHeight)
+          .attr('height', svgHeight) // so due to the append, you'll see these attr in the elements right after svg area, as "svg"
+
+          // D3 provides the ability to set attributes of a selected element using the attr() function. This function takes two parameters:
+          // 1) Attribute Name - For example, "width" to set an SVG width.
+          // 2) Value or An accessor function 
 
   tooltip = d3.select('body')
               .append('div')
@@ -48,23 +52,20 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
               .attr('opacity', '0');
 
 // Set scales
-  // X = d3.scaleBand() // this function in d3 used to construct a new band, horizontal positions of the bars is given by a band scale
-  //       .domain(d3.range(data.length))
-  //       .range([margin.left, width - margin.right])
-  //       .padding(0.1)
+  X = d3.scaleBand() // this function in d3 used to construct a new band, horizontal positions of the bars is given by a band scale
+        .domain(d3.range(data.length))
+        .range([margin.left, width - margin.right])
+        .padding(0.1)
 
-  // Y = d3.scaleLinear()
-  //       .domain([0, 100])
-  //       .range([height - margin.bottom, margin.top])
+  yScale = d3.scaleLinear() // this is a method we have created to be input into our barchart
+        .domain([0, d3.max(barData)]) // takes array as an argument, d3.max is getting the largest data value in the array
+        .range([0, svgHeight]) // svgHeight is the height of our container (I believe), thats the highest we want our scale to go
 
 // Create axes
 
 
 
-
 // Append the axes as G
-
-
 
 
 
@@ -76,8 +77,8 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
     .data(barData) // passed in our bar data, this method takes our data into a waiting state
     .enter() // this method will take our data away form the waiting state and perform further methods/operations for each individual data item
     .append("rect") // for each data item we are appending a rect in our svg(svg area) 
-    .attr("y", function(d) { // this function gets the data in its parameter
-        return svgHeight - d // attr y is then calculated when height is then subtracted by the data in the parameter
+    .attr("y", function(d) { // this function gets the data in its parameter  
+      return svgHeight - d // attr y is then calculated when height is then subtracted by the data in the parameter
     })
     .attr("height", function(d) { // height is just the value of the data
       return d;
@@ -87,18 +88,19 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
       var translate = [barWidth * i, 0]; // this is [x, y]
       return "translate("+ translate +")"; // in this step we calc the translation of our bars
     })
+    .attr('fill', 'green')
+
+// tooltip
+    .append('title') // need to append a tag for each display of tooltip data
+    .text((individualElementsOfArray) => { // after making the title tag, add text into it that takes in the individual value of each rect, and displays it
+      return `Bar Value: ${individualElementsOfArray}`
+    })
 
 // Create Circle group
 
 
 
-
-
 // Mouseover / mouseout
-
-
-
-// tooltip
 
 
 
@@ -115,19 +117,3 @@ console.log(barData); // within scope
 
 
 // _________________________________________________________
-// var width = 900; 
-// var height = 600;
-
-// var svgHeight = height + margin.top + margin.bottom;
-// var svgWidth = width + margin.left + margin.right;
-
-// var svg = d3.select('#svg-area')
-//             .append('svg')
-//             .attr('width', svgWidth) // need to give the svg the attributes of height and width of whats defined above
-//             .attr('height', svgHeight)
-            
-
-// var tooltip = d3.select('body')
-//                 .append('div')
-//                 .attr('class', 'tooltip')
-//                 .attr('opacity', '0');
