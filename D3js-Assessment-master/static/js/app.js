@@ -127,26 +127,16 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
 
 
 // Legend function
-  var valueHover 
+  var valueHover; 
   valueHover = svg.selectAll('text.bar') // selects all text elements in the svg, and since we have no text elements upon writing this it will take none
     .data(data) // take in the data
     .enter() // this will bring in data one by one for further processing
     .append('text') // want to add a txt for each data item
     .attr("class", "bar")
     .attr("text-anchor", "middle") 
-    .attr("x", function(d) { console.log(d.year); return xScale(d.year); }) // appending the text to rect elements isnt valid in svg, and text wont show, instead needed to append the text to either g elements or yop-level svg
-    .attr("y", function(d) {  return yScale(d.points) - 10; })
+    .attr("x", function(d) { console.log(d.year); return xScale(d.year) + 110; }) // appending the text to rect elements isnt valid in svg, and text wont show, instead needed to append the text to either g elements or yop-level svg
+    .attr("y", function(d) {  return yScale(d.points) + 90; })
     .text(function(d) { return d.points; });
-
-    // .text(function(d) {
-    //   return console.log(d), d; // we want the value of the text to be the value of our data item 
-    // })
-    // .attr('y', function(d, i) {
-    //   return console.log(d), svgHeight - d - 3; // want our text to be higher than out bar, thats why we are subtracting 3 more pixels
-    // })
-    // .attr('x', function(d, i) {
-    //   return barWidth * i; // we want the text element to be at the start of each bar
-    // })
 
   
 // Axis Titles
