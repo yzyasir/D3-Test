@@ -110,7 +110,7 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
 // tooltip
    .append('title') // need to append a tag for each display of tooltip data
    .text((individualElementsOfArray) => { // after making the title tag, add text into it that takes in the individual value of each rect, and displays it
-      return `Bar Value: ${individualElementsOfArray}`
+      return `Bar Value: ${individualElementsOfArray.points}`
    })
 
 
@@ -154,8 +154,8 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
   .attr("stroke", "black")
   .text("Points Scored");
 
-console.log(barData); // within scope 
-console.log(dataYears)
+//console.log(barData); // within scope 
+//console.log(dataYears)
 });
 // json import, data is coming from the "data" attribute in the function callback
 // use json editer online to understand what the data is supposed to look like
