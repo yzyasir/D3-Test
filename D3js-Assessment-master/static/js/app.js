@@ -138,13 +138,16 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
     .attr("y", function(d) {  return yScale(d.points) + 90; })
     .text(function(d) { return d.points; });
 
+  var circle;
+  circle = svg.selectAll('text.bar')
+   .data(data)
   
 // Axis Titles
 // Chart title
   svg.append("text")
       .attr("transform", "translate(200,0) ")
       .attr("x", 50)
-      .attr("y", 50)
+      .attr("y", 20)
       .attr("font-size", "24px")
       .text("Chelsea Football Points Scored Over Years")
 
