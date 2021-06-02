@@ -35,3 +35,18 @@ rect:hover{
   fill: #FFFF00;
   transition: 0.5s all ease-in;
 }
+
+.container {
+  height: 800px;
+}
+
+#d2_plot {
+  height: 800px;
+}
+
+#svg-area{
+  height: 800px;
+}
+
+/* These all have been expanded, and are not the issue, therefore svg itself is the problem */
+

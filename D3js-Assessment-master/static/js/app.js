@@ -35,7 +35,7 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
   svg = d3.select('#svg-area') // here svg-area is being passed to svg
           .append('svg') // .append() appends a new element with the specified name as the last childe in the current selection
           .attr('width', svgWidth) // need to give the svg the attributes of height and width of whats defined above
-          .attr('height', svgHeight) // so due to the append, you'll see these attr in the elements right after svg area, as "svg"
+          .attr('height', svgHeight + 200) // so due to the append, you'll see these attr in the elements right after svg area, as "svg"
           
           // D3 provides the ability to set attributes of a selected element using the attr() function. This function takes two parameters:
           // 1) Attribute Name - For example, "width" to set an SVG width.
@@ -72,10 +72,11 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
 // Append the axes as G
 
 // X Axis
+  // console.log(svgHeight)
+  // console.log(height)
   g.append("g") // addd another group element to have our x axis grouped under one element
-   .attr('transform', `translate(0, 599)`) // transform attribute to shift our x-axis towards the bottom of the SVG, had to add custum value instead of height, I did something funky it seems
+   .attr('transform', "translate(0," + svgHeight + ")") // transform attribute to shift our x-axis towards the bottom of the SVG, had to add custum value instead of height, I did something funky it seems
    .call(d3.axisBottom(xScale)) // insert x-axis on this group element using .call(d3.axisBottom(x))
-   
    .append("text")
    .attr("y", height - 460) // these values affects the year axis title
    .attr("x", width - 250)
@@ -127,19 +128,25 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
 
 // Legend function
   var valueHover 
-  valueHover = svg.selectAll('text') // selects all text elements in the svg, and since we have no text elements upon writing this it will take none
-    .data(barData) // take in the data
+  valueHover = svg.selectAll('text.bar') // selects all text elements in the svg, and since we have no text elements upon writing this it will take none
+    .data(data) // take in the data
     .enter() // this will bring in data one by one for further processing
     .append('text') // want to add a txt for each data item
-    .text(function(d) {
-      return d; // we want the value of the text to be the value of our data item 
-    })
-    .attr('y', function(d, i) {
-      return svgHeight - d - 3; // want our text to be higher than out bar, thats why we are subtracting 3 more pixels
-    })
-    .attr('x', function(d, i) {
-      return barWidth * i; // we want the text element to be at the start of each bar
-    })
+    .attr("class", "bar")
+    .attr("text-anchor", "middle") 
+    .attr("x", function(d) { console.log(d.year); return xScale(d.year); }) // appending the text to rect elements isnt valid in svg, and text wont show, instead needed to append the text to either g elements or yop-level svg
+    .attr("y", function(d) {  return yScale(d.points) - 10; })
+    .text(function(d) { return d.points; });
+
+    // .text(function(d) {
+    //   return console.log(d), d; // we want the value of the text to be the value of our data item 
+    // })
+    // .attr('y', function(d, i) {
+    //   return console.log(d), svgHeight - d - 3; // want our text to be higher than out bar, thats why we are subtracting 3 more pixels
+    // })
+    // .attr('x', function(d, i) {
+    //   return barWidth * i; // we want the text element to be at the start of each bar
+    // })
 
   
 // Axis Titles
