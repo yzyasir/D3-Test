@@ -1,5 +1,7 @@
 // Note: To run server "python -m http.server --cgi 8000"
 
+
+
 // Read and arrange the data
 d3.json('data/data.json').then(function(data){ // Here getting the data using an ajax call
   // console.log(data); // tested whether or not I was getting the data
@@ -15,7 +17,7 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
       svg, // svg(scalable vector graphics)
       xScale,
       yScale,
-      
+
 
 // _______________________________________________________________________________
 // Read and arrange the data
@@ -36,7 +38,7 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
           .append('svg') // .append() appends a new element with the specified name as the last childe in the current selection
           .attr('width', svgWidth) // need to give the svg the attributes of height and width of whats defined above
           .attr('height', svgHeight) // so due to the append, you'll see these attr in the elements right after svg area, as "svg"
-
+          
           // D3 provides the ability to set attributes of a selected element using the attr() function. This function takes two parameters:
           // 1) Attribute Name - For example, "width" to set an SVG width.
           // 2) Value or An accessor function 
@@ -70,21 +72,19 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
 
 
 // Append the axes as G 
-  g.append("g") // addd another group element  to have our x axis grouped under one element
-   .attr('transform', `translate(0, ${height - margin})`) // transform attribute to shift our x-axis towards the bottom of the SVG, had to add custum value instead of height, I did something funky it seems
-   // .attr("transform", "translate(0," + height + ")")
-   // .attr("transform", `translate(0, ${height - margin.bottom})`)
+  g.append("g") // addd another group element to have our x axis grouped under one element
+   .attr('transform', `translate(0, 599)`) // transform attribute to shift our x-axis towards the bottom of the SVG, had to add custum value instead of height, I did something funky it seems
+   // .attr("transform", `translate(0, ${height - margin})`)
    .call(d3.axisBottom(xScale)) // insert x-axis on this group element using .call(d3.axisBottom(x))
    .append("text")
-   .attr("y", height - 475) // these values affects the year axis title
+   .attr("y", height - 460) // these values affects the year axis title
    .attr("x", width - 250)
    .attr("text-anchor", "end")
    .attr("stroke", "black")
    .text("Year");
 
   g.append("g") // add another group element to hold y axis and its parts
-   .call(d3.axisLeft(yScale) // here we are adding the y axis
-    ) // how many ticks to display on y axis
+   .call(d3.axisLeft(yScale)) // here we are adding the y axis
 
 
 // Create Bars or Line function  
@@ -103,7 +103,7 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
     })
    .attr("width", xScale.bandwidth()) // The width of our bars would be determined by the scaleBand() function // THIS WORKS
    .attr("height", function(d) { 
-     return height - yScale(d.points); 
+     return svgHeight - yScale(d.points); 
     })
 
     
@@ -115,13 +115,13 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
 
 
 // Legend function
-  var valueHover;
+  var valueHover 
   valueHover = svg.selectAll('text') // selects all text elements in the svg, and since we have no text elements upon writing this it will take none
     .data(barData) // take in the data
     .enter() // this will bring in data one by one for further processing
     .append('text') // want to add a txt for each data item
     .text(function(d) {
-      return d; // we want the value of the text to be the value of our data item
+      return d; // we want the value of the text to be the value of our data item 
     })
     .attr('y', function(d, i) {
       return svgHeight - d - 3; // want our text to be higher than out bar, thats why we are subtracting 3 more pixels
@@ -130,6 +130,7 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
       return barWidth * i; // we want the text element to be at the start of each bar
     })
 
+  
 // Axis Titles
 // Chart title
   svg.append("text")
