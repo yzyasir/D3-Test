@@ -71,40 +71,42 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
 
 // Append the axes as G 
   g.append("g") // addd another group element  to have our x axis grouped under one element
-   .attr("transform", "translate(0," + 580 + ")")// transform attribute to shift our x-axis towards the bottom of the SVG, had to add custum value instead of height, I did something funky it seems
-   //.attr("transform", `translate(0, ${height - margin.bottom})`)
-   .call(d3.axisBottom(xScale)); // insert x-axis on this group element using .call(d3.axisBottom(x))
+   .attr('transform', `translate(0, ${height - margin})`) // transform attribute to shift our x-axis towards the bottom of the SVG, had to add custum value instead of height, I did something funky it seems
+   // .attr("transform", "translate(0," + height + ")")
+   // .attr("transform", `translate(0, ${height - margin.bottom})`)
+   .call(d3.axisBottom(xScale)) // insert x-axis on this group element using .call(d3.axisBottom(x))
+   .append("text")
+   .attr("y", height - 475) // these values affects the year axis title
+   .attr("x", width - 250)
+   .attr("text-anchor", "end")
+   .attr("stroke", "black")
+   .text("Year");
 
   g.append("g") // add another group element to hold y axis and its parts
    .call(d3.axisLeft(yScale) // here we are adding the y axis
-   .tickFormat(function(d){
-      return "$" + d;
-   }).ticks(10)) // how many ticks to display on y axis
-   .append("text")
-   .attr("y", 6)
-   .attr("dy", "0.71em")
-   .attr("text-anchor", "end")
-   .text("Points");
+    ) // how many ticks to display on y axis
 
 
 // Create Bars or Line function  
 // ________________________________________________________________________________________________________________________________________________________
   g.selectAll(".bar") // bars are nothing more than rectangless, so we select all bar classes, since intially we have no bar, its empty
-   .data(barData) // passed in our bar data, this method takes our data into a waiting state
+   .data(data) // passed in our bar data, this method takes our data into a waiting state
    .enter() // this method will take our data away form the waiting state and perform further methods/operations for each individual data item            This code explains how we added bars, created bars with our data using the SVG rect element
    .append("rect") // for each data item we are appending a rect in our svg(svg area) 
 // _________________________________________________________________________________________________________________________________________________________
    .attr("class", "bar") // here we are giving rect the class of bar
-   .attr("x", function(d) { 
-     return xScale(d.year); // this gives undefined, is that ok?
-    }) // specify the x and y positions of each of the bars and provide a width and height to the bars 
+   .attr("x", function(d) { //we need to specify the x and y positions of each of the bars and provide a width and height to the bars
+    return xScale(d.year); // WORKS
+   }) // specify the x and y positions of each of the bars and provide a width and height to the bars     
    .attr("y", function(d) {  
-     return yScale(d.points); // this is prob where its all going wrong
+     return yScale(d.points); // changed it to d now im getting the values I want/ WORKS
     })
    .attr("width", xScale.bandwidth()) // The width of our bars would be determined by the scaleBand() function // THIS WORKS
    .attr("height", function(d) { 
      return height - yScale(d.points); 
     })
+
+    
 // tooltip
    .append('title') // need to append a tag for each display of tooltip data
    .text((individualElementsOfArray) => { // after making the title tag, add text into it that takes in the individual value of each rect, and displays it
@@ -113,7 +115,7 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
 
 
 // Legend function
-  var valueHover
+  var valueHover;
   valueHover = svg.selectAll('text') // selects all text elements in the svg, and since we have no text elements upon writing this it will take none
     .data(barData) // take in the data
     .enter() // this will bring in data one by one for further processing
@@ -128,8 +130,32 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
       return barWidth * i; // we want the text element to be at the start of each bar
     })
 
-//console.log(barData); // within scope 
-//console.log(dataYears)
+// Axis Titles
+// Chart title
+  svg.append("text")
+      .attr("transform", "translate(200,0) ")
+      .attr("x", 50)
+      .attr("y", 50)
+      .attr("font-size", "24px")
+      .text("Chelsea Football Points Scored Over Years")
+
+// Y Axis
+  g.append("g")
+  .call(d3.axisLeft(yScale)
+  .tickFormat(function(d){
+    return "$" + d;
+  }).ticks(25))
+  .append("text")
+  .attr("transform", "rotate(-90)")
+  .attr("y", 25)
+  .attr("x", -250.0)
+  .attr("dy", "-6.1em")
+  .attr("text-anchor", "end")
+  .attr("stroke", "black")
+  .text("Points Scored");
+
+console.log(barData); // within scope 
+console.log(dataYears)
 });
 // json import, data is coming from the "data" attribute in the function callback
 // use json editer online to understand what the data is supposed to look like
