@@ -1,7 +1,5 @@
 // Note: To run server "python -m http.server --cgi 8000"
 
-
-
 // Read and arrange the data
 d3.json('data/data.json').then(function(data){ // Here getting the data using an ajax call
   // console.log(data); // tested whether or not I was getting the data
@@ -71,11 +69,13 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
          .attr("transform", "translate(" + 100 + "," + 100 + ")"); // add a transform attribute to position our graph with some margin 
 
 
-// Append the axes as G 
+// Append the axes as G
+
+// X Axis
   g.append("g") // addd another group element to have our x axis grouped under one element
    .attr('transform', `translate(0, 599)`) // transform attribute to shift our x-axis towards the bottom of the SVG, had to add custum value instead of height, I did something funky it seems
-   // .attr("transform", `translate(0, ${height - margin})`)
    .call(d3.axisBottom(xScale)) // insert x-axis on this group element using .call(d3.axisBottom(x))
+   
    .append("text")
    .attr("y", height - 460) // these values affects the year axis title
    .attr("x", width - 250)
@@ -83,9 +83,20 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
    .attr("stroke", "black")
    .text("Year");
 
-  g.append("g") // add another group element to hold y axis and its parts
-   .call(d3.axisLeft(yScale)) // here we are adding the y axis
-
+// Y Axis
+  g.append("g")
+   .call(d3.axisLeft(yScale)
+   .tickFormat(function(d){
+    return "$" + d;
+   }).ticks(25))
+   .append("text")
+   .attr("transform", "rotate(-90)")
+   .attr("y", 25)
+   .attr("x", -250.0)
+   .attr("dy", "-6.1em")
+   .attr("text-anchor", "end")
+   .attr("stroke", "black")
+   .text("Points Scored");
 
 // Create Bars or Line function  
 // ________________________________________________________________________________________________________________________________________________________
@@ -139,21 +150,6 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
       .attr("y", 50)
       .attr("font-size", "24px")
       .text("Chelsea Football Points Scored Over Years")
-
-// Y Axis
-  g.append("g")
-  .call(d3.axisLeft(yScale)
-  .tickFormat(function(d){
-    return "$" + d;
-  }).ticks(25))
-  .append("text")
-  .attr("transform", "rotate(-90)")
-  .attr("y", 25)
-  .attr("x", -250.0)
-  .attr("dy", "-6.1em")
-  .attr("text-anchor", "end")
-  .attr("stroke", "black")
-  .text("Points Scored");
 
 //console.log(barData); // within scope 
 //console.log(dataYears)
