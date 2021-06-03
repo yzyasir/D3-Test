@@ -88,7 +88,7 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
   g.append("g")
    .call(d3.axisLeft(yScale)
    .tickFormat(function(d){
-    return "$" + d;
+    return d;
    }).ticks(25))
    .append("text")
    .attr("transform", "rotate(-90)")
@@ -133,14 +133,21 @@ d3.json('data/data.json').then(function(data){ // Here getting the data using an
     .enter() // this will bring in data one by one for further processing
     .append('text') // want to add a txt for each data item
     .attr("class", "bar")
-    .attr("text-anchor", "middle") 
-    .attr("x", function(d) { console.log(d.year); return xScale(d.year) + 110; }) // appending the text to rect elements isnt valid in svg, and text wont show, instead needed to append the text to either g elements or yop-level svg
+    .attr("x", function(d) { return xScale(d.year) + 110; }) // appending the text to rect elements isnt valid in svg, and text wont show, instead needed to append the text to either g elements or yop-level svg
     .attr("y", function(d) {  return yScale(d.points) + 90; })
     .text(function(d) { return d.points; });
 
+// Circle values
+// Can use a function with an algorithm to get all of the highest 3 values, then only allow them to have circles on top
   var circle;
-  circle = svg.selectAll('text.bar')
-   .data(data)
+  circle = svg.selectAll('circle.circleLegend')
+   .data(data) 
+   .append('circle') // lets see if I can at least get it to show
+   .attr("class", "circleLegend") // giving the appended circle this class
+   .attr('cx', "20%") 
+   .attr('cy', "20%")
+   .attr('r', '10') // setting the size
+   .style('fill', 'yellow')
   
 // Axis Titles
 // Chart title
